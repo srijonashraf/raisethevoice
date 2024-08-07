@@ -1,23 +1,31 @@
 import { Skeleton } from "antd";
+import _ from "lodash";
 import { FiTrendingUp } from "react-icons/fi";
 import { Link } from "react-router-dom";
-
-const trendingPosts: any = [];
+import { useGetTrendingPostsQuery } from "store/api/feed";
+import { PostT } from "types/feed";
 
 export default function RightSidebar() {
+	const { data } = useGetTrendingPostsQuery("");
+
 	return (
 		<div>
 			<div>
 				<div className="flex items-center">
 					<h1 className="text-xl font-bold">Trending</h1>
-					<FiTrendingUp className="w-6 h-6 ml-2 -translate-y-1" />
+					<FiTrendingUp className="ml-2 text-lg" />
 				</div>
-				{trendingPosts ? (
-					trendingPosts.map((article: any) => (
-						<Link to={`/article/${article.id}/`} key={article.title}>
-							<p className="text-md font-semibold">{article.title}</p>
-						</Link>
-					))
+
+				{data ? (
+					<div className="flex flex-col gap-1.5 mt-2">
+						{data.map((post: PostT) => (
+							<Link key={post.id} to={`/post/${post.id}/`}>
+								<p className="text-md font-normal">
+									{_.truncate(post.title, { length: 75 })}
+								</p>
+							</Link>
+						))}
+					</div>
 				) : (
 					<Skeleton />
 				)}

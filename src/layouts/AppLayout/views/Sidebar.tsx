@@ -5,7 +5,7 @@ export default function Sidebar() {
 	return (
 		<div className="max-w-xl mx-auto">
 			<aside className="w-full" aria-label="Sidebar">
-				<div className="px-3 py-4 overflow-y-auto rounded">
+				<div className="pb-4 overflow-y-auto rounded">
 					<ul className="space-y-2">
 						<li className={`${true ? "block" : "hidden"} `}>
 							<Link

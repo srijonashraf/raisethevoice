@@ -7,10 +7,20 @@ export const feedApi = createApi({
 		baseUrl: import.meta.env.VITE_APP_BASE_URL as string,
 	}),
 	endpoints: (builder) => ({
-		getFeed: builder.query({
+		getPosts: builder.query({
 			query: () => ({ url: "/feed/", method: "get" }),
+		}),
+		getSinglePost: builder.query({
+			query: (id: number) => ({ url: `/feed/${id}`, method: "get" }),
+		}),
+		getTrendingPosts: builder.query({
+			query: () => ({ url: "/feed/trending/", method: "get" }),
 		}),
 	}),
 });
 
-export const { useGetFeedQuery } = feedApi;
+export const {
+	useGetPostsQuery,
+	useGetSinglePostQuery,
+	useGetTrendingPostsQuery,
+} = feedApi;
