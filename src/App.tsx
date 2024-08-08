@@ -1,23 +1,23 @@
 import Navbar from "components/Navbar";
 import AppLayout from "layouts/AppLayout";
-import HomePage from "pages/home";
+import FeedPage from "pages/feed";
 import PostPage from "pages/post";
-import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import store from "store";
+import { useLoadUserQuery } from "store/api/auth";
 
 export default function App() {
+	const { data } = useLoadUserQuery("");
+	console.log(data);
+
 	return (
-		<Provider store={store}>
-			<BrowserRouter>
-				<Navbar />
-				<Routes>
-					<Route element={<AppLayout />}>
-						<Route path="/" element={<HomePage />} />
-						<Route path="post/:id" element={<PostPage />} />
-					</Route>
-				</Routes>
-			</BrowserRouter>
-		</Provider>
+		<BrowserRouter>
+			<Navbar />
+			<Routes>
+				<Route element={<AppLayout />}>
+					<Route path="/" element={<FeedPage />} />
+					<Route path="post/:id" element={<PostPage />} />
+				</Route>
+			</Routes>
+		</BrowserRouter>
 	);
 }

@@ -2,7 +2,7 @@ import { Col, Row } from "antd";
 import Feed from "./views/Feed";
 import RightSidebar from "./views/RightSidebar";
 
-export default function HomePage() {
+export default function FeedPage() {
 	return (
 		<div>
 			<Row gutter={[40, 0]}>

@@ -6,9 +6,15 @@ export const feedApi = createApi({
 	baseQuery: axiosBaseQuery({
 		baseUrl: import.meta.env.VITE_APP_BASE_URL as string,
 	}),
+	tagTypes: ["Feed"],
 	endpoints: (builder) => ({
 		getPosts: builder.query({
 			query: () => ({ url: "/feed/", method: "get" }),
+			providesTags: ["Feed"],
+		}),
+		createPost: builder.mutation({
+			query: (data) => ({ url: "/feed/", method: "post", data }),
+			invalidatesTags: ["Feed"],
 		}),
 		getSinglePost: builder.query({
 			query: (id: number) => ({ url: `/feed/${id}`, method: "get" }),
@@ -21,6 +27,7 @@ export const feedApi = createApi({
 
 export const {
 	useGetPostsQuery,
+	useCreatePostMutation,
 	useGetSinglePostQuery,
 	useGetTrendingPostsQuery,
 } = feedApi;

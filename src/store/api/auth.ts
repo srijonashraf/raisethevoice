@@ -1,5 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import axiosBaseQuery from "./queries";
+import { setUser } from "store/auth";
 
 export const authApi = createApi({
 	reducerPath: "authApi",
@@ -9,19 +10,39 @@ export const authApi = createApi({
 	endpoints: (builder) => ({
 		registerUser: builder.mutation({
 			query: (data: any) => ({
-				url: "/v1/user/register/",
+				url: "/account/login/",
 				method: "post",
 				data,
 			}),
 		}),
 		loginUser: builder.mutation({
 			query: (data: any) => ({
-				url: "/v1/user/chat-login/",
+				url: "/account/signup/",
 				method: "post",
 				data,
 			}),
 		}),
+		loadUser: builder.query({
+			query: () => ({
+				url: "/account/user/",
+				method: "get",
+			}),
+			async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+				console.log(arg);
+
+				try {
+					const { data } = await queryFulfilled;
+					dispatch(setUser(data));
+				} catch (error) {
+					console.error("Failed to fetch data:", error);
+				}
+			},
+		}),
 	}),
 });
 
-export const { useRegisterUserMutation, useLoginUserMutation } = authApi;
+export const {
+	useRegisterUserMutation,
+	useLoginUserMutation,
+	useLoadUserQuery,
+} = authApi;

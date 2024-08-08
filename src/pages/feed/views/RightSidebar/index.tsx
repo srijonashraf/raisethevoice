@@ -27,7 +27,7 @@ export default function RightSidebar() {
 						))}
 					</div>
 				) : (
-					<Skeleton />
+					<Skeleton className="mt-5" />
 				)}
 			</div>
 		</div>

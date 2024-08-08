@@ -1,7 +1,22 @@
 import { IoNewspaperOutline } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { RootState } from "store";
+import { handlePostModal } from "store/prompt";
 
 export default function Sidebar() {
+	const dispatch = useDispatch();
+	const { user } = useSelector((state: RootState) => state.auth);
+	const navigate = useNavigate();
+
+	const onWritePost = () => {
+		if (user) {
+			dispatch(handlePostModal({ open: true }));
+		} else {
+			navigate("/login");
+		}
+	};
+
 	return (
 		<div className="max-w-xl mx-auto">
 			<aside className="w-full" aria-label="Sidebar">
@@ -36,7 +51,7 @@ export default function Sidebar() {
 					</ul>
 				</div>
 				<div>
-					<ActionButton onClick={() => {}}>Write</ActionButton>
+					<ActionButton onClick={onWritePost}>Write</ActionButton>
 				</div>
 			</aside>
 		</div>
