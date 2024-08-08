@@ -9,3 +9,10 @@ a {
 a:hover {
 	color: initial;
 }
+
+input:focus,
+textarea:focus,
+button {
+	outline: none;
+	box-shadow: none;
+}

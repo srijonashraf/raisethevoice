@@ -7,7 +7,7 @@ import _ from "lodash";
 
 dayjs.extend(relativeTime);
 
-export default function Post({
+export default function PostPrompt({
 	author,
 	created_at,
 	id,

@@ -9,7 +9,7 @@ coreAxios.interceptors.request.use((req) => {
 	const accessToken = storage.get("access_token");
 
 	if (accessToken) {
-		req.headers.authorization = `Bearer ${accessToken}`;
+		req.headers.authorization = `Token ${accessToken}`;
 	}
 
 	return req;
