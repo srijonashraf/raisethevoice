@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import Navbar from "components/Navbar";
 import AppLayout from "layouts/AppLayout";
 import FeedPage from "pages/feed";
@@ -8,6 +7,7 @@ import { useLoadUserQuery } from "store/api/auth";
 
 export default function App() {
 	const { data } = useLoadUserQuery("");
+	console.log(data);
 
 	return (
 		<BrowserRouter>
