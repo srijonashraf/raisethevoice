@@ -28,6 +28,8 @@ export const authApi = createApi({
 				method: "get",
 			}),
 			async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+				console.log(arg);
+
 				try {
 					const { data } = await queryFulfilled;
 					dispatch(setUser(data));
