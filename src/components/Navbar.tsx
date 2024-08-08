@@ -1,6 +1,11 @@
+import { Modal } from "antd";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import LoginModal from "./Modal/LoginModal";
 
 export default function Navbar() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div>
       <nav className="bg-white shadow fixed w-full z-[999]">
@@ -46,13 +51,13 @@ export default function Navbar() {
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
               <div className="ml-3 relative">
                 <div className="flex items-center justify-between">
-                  <Link
-                    to="/login"
-                    className="bg-gray-900 !hover:text-white !text-white px-3 py-2 rounded-md text-sm font-medium"
+                  <div
+                    className="bg-gray-900 !hover:text-white !text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer"
                     aria-current="page"
+                    onClick={() => setIsModalOpen(true)}
                   >
                     Sign in
-                  </Link>
+                  </div>
                 </div>
               </div>
             </div>
@@ -60,6 +65,18 @@ export default function Navbar() {
         </div>
       </nav>
       <div style={{ height: 64 }} />
+      <Modal
+        title="Basic Modal"
+        open={isModalOpen}
+        onOk={() => setIsModalOpen(false)}
+        onCancel={() => setIsModalOpen(false)}
+        styles={{
+          header: { display: "none" },
+          footer: { display: "none" },
+        }}
+      >
+        <LoginModal />
+      </Modal>
     </div>
   );
 }
