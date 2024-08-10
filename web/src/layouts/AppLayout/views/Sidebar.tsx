@@ -1,8 +1,8 @@
-import { IoNewspaperOutline } from "react-icons/io5";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { RootState } from "store";
-import { handlePostModal, requireAuth } from "store/prompt";
+import { IoNewspaperOutline } from 'react-icons/io5';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { RootState } from 'store';
+import { handlePostModal, requireAuth } from 'store/prompt';
 
 export default function Sidebar() {
   const dispatch = useDispatch();
@@ -17,11 +17,11 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="max-w-xl  sticky top-20 mx-auto">
+    <div className="max-w-xl sticky top-[88px] mx-auto">
       <aside className="w-full" aria-label="Sidebar">
         <div className="pb-4 overflow-y-auto rounded">
           <ul className="space-y-2">
-            <li className={`${true ? "block" : "hidden"} `}>
+            <li className={`${true ? 'block' : 'hidden'} `}>
               <Link
                 to="/"
                 className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100 "
