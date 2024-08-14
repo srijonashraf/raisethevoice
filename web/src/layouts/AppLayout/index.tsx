@@ -1,7 +1,7 @@
 import { Col, Row } from 'antd';
-import Prompts from 'components/Prompts';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './views/Sidebar';
+import Prompts from 'components/Prompts';
 
 export default function AppLayout() {
   return (
