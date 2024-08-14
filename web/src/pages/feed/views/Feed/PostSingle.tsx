@@ -64,7 +64,7 @@ export default function PostSingle({
           <div className="h-full w-full pl-2.5 pr-1.5 flex items-center justify-center cursor-pointer hover:bg-gray-200">
             <BiUpArrow className="text-lg" />
           </div>
-          <div className="border-l border-r border-gray-200 h-full flex items-center px-2">
+          <div className="border-l border-r border-gray-200 h-full min-w-8 flex justify-center items-center px-2">
             {total_likes !== undefined ? <p>{total_likes}</p> : <></>}
           </div>
           <div className="h-full w-full pl-1.5 pr-2.5 flex items-center justify-center cursor-pointer hover:bg-gray-200">
