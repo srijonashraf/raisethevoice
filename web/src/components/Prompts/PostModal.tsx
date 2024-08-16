@@ -1,8 +1,6 @@
 import { Button, Input, Modal, TextArea } from 'lib';
 import { useState } from 'react';
-import { BiPoll } from 'react-icons/bi';
 import { FcGallery } from 'react-icons/fc';
-import { RiChatThreadLine } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { useCreatePostMutation } from 'store/api/feed';
