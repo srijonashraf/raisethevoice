@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from feed.models import Post, LikePost, Comment
+from feed.models import Post, Vote, Comment
 from account.serializers import UserSerializer
 
 
@@ -19,10 +19,9 @@ class PostSerializer(serializers.ModelSerializer):
         return post
 
 
-class LikePostSerializer(serializers.ModelSerializer):
-
+class VoteSerializer(serializers.ModelSerializer):
     class Meta:
-        model = LikePost
+        model = Vote
         fields = "__all__"
         depth = 1
 
