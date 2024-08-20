@@ -13,16 +13,20 @@ class PostSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def get_is_upvoted(self, obj):
-        user = self.context['request'].user
+        request = self.context.get('request', None)
 
-        if(user):
-            return Vote.objects.filter(user=user, post=obj, type=Vote.UPVOTE).exists()
+        if(request and request.user.is_authenticated):
+            return Vote.objects.filter(user=request.user, post=obj, type=Vote.UPVOTE).exists()
+        
+        return False
 
     def get_is_downvoted(self, obj):
-        user = self.context['request'].user
+        request = self.context.get('request', None)
 
-        if(user):
-            return Vote.objects.filter(user=user, post=obj, type=Vote.DOWNVOTE).exists()
+        if(request and request.user.is_authenticated):
+            return Vote.objects.filter(user=request.user, post=obj, type=Vote.DOWNVOTE).exists()
+            
+        return False
 
     def create(self, validated_data):
         title = validated_data.pop("title")
