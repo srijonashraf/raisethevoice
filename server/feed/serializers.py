@@ -5,10 +5,24 @@ from account.serializers import UserSerializer
 
 class PostSerializer(serializers.ModelSerializer):
     author = UserSerializer(required=False)
+    is_upvoted = serializers.SerializerMethodField()
+    is_downvoted = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
         fields = "__all__"
+
+    def get_is_upvoted(self, obj):
+        user = self.context['request'].user
+
+        if(user):
+            return Vote.objects.filter(user=user, post=obj, type=Vote.UPVOTE).exists()
+
+    def get_is_downvoted(self, obj):
+        user = self.context['request'].user
+
+        if(user):
+            return Vote.objects.filter(user=user, post=obj, type=Vote.DOWNVOTE).exists()
 
     def create(self, validated_data):
         title = validated_data.pop("title")
