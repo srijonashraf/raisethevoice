@@ -41,7 +41,7 @@ export default function Navbar() {
                       <input
                         type="text"
                         id="table-search"
-                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 py-2"
+                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-80 pl-10 py-2"
                         placeholder="Search"
                         value={''}
                         onChange={() => {}}
