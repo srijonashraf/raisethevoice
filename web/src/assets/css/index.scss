@@ -2,17 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+body * {
+  //   font-family: 'Baloo Da 2', sans-serif;
+  //   font-family: 'Noto Sans Bengali', sans-serif !important;
+  font-family: 'Hind Siliguri', sans-serif;
+}
+
 a {
-	color: inherit !important;
+  color: inherit !important;
 }
 
 a:hover {
-	color: initial;
+  color: initial;
 }
 
 input:focus,
 textarea:focus,
 button {
-	outline: none;
-	box-shadow: none;
+  outline: none;
+  box-shadow: none;
 }
