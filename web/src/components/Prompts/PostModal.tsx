@@ -82,6 +82,7 @@ const PostType = () => {
   ]);
 
   const handlePreview = async (file: UploadFile) => {
+    console.log(fileList);
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj as FileType);
     }
