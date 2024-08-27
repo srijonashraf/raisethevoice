@@ -9,7 +9,7 @@ export default function Feed() {
   return (
     <>
       {!isLoading ? (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 mb-5">
           {data?.length ? (
             data.map((post: PostT) => <PostSingle key={post.id} {...post} />)
           ) : (

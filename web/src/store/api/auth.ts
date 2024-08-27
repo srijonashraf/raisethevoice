@@ -31,7 +31,7 @@ export const authApi = createApi({
         console.log(arg);
         try {
           const { data } = await queryFulfilled;
-          dispatch(setUser(data));
+          dispatch(setUser(data?.user));
         } catch (error) {
           console.error('Failed to fetch data:', error);
         }

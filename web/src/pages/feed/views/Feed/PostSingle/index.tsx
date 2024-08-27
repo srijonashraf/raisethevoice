@@ -7,10 +7,20 @@ import { Link } from 'react-router-dom';
 import { PostT } from 'types/feed';
 import { createMarkup } from 'utils/misc';
 import Vote from './Vote';
+import CommentBox from './CommentBox';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store';
+import { requireAuth } from 'store/prompt';
+import ShareModal from './ShareModal';
 
 dayjs.extend(relativeTime);
 
 export default function PostSingle(props: PostT) {
+  const [isCommentBoxOpen, setIsCommentBoxOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
   const {
     author,
     created_at,
@@ -20,6 +30,14 @@ export default function PostSingle(props: PostT) {
     total_comments,
     share_count,
   } = props;
+
+  const onCommentClick = () => {
+    if (user) {
+      setIsCommentBoxOpen(true);
+    } else {
+      dispatch(requireAuth());
+    }
+  };
 
   return (
     <div className="w-full rounded-xl border p-5 shadow-sm bg-white">
@@ -63,15 +81,28 @@ export default function PostSingle(props: PostT) {
 
       <div className="flex items-center gap-2.5 mt-4">
         <Vote {...props} />
-        <div className="bg-gray-100 hover:bg-gray-200 cursor-pointer h-8 px-2.5 rounded-full flex gap-1.5 items-center justify-center">
+        <div
+          className="bg-gray-100 hover:bg-gray-200 cursor-pointer h-8 px-2.5 rounded-full flex gap-1.5 items-center justify-center"
+          onClick={onCommentClick}
+        >
           <FaRegCommentAlt className="text-[15px] translate-y-[1px]" />
           <p>{total_comments ?? 0}</p>
         </div>
-        <div className="bg-gray-100 hover:bg-gray-200 cursor-pointer h-8 px-2.5 rounded-full flex gap-1.5 items-center justify-center">
+        <div
+          className="bg-gray-100 hover:bg-gray-200 cursor-pointer h-8 px-2.5 rounded-full flex gap-1.5 items-center justify-center"
+          onClick={() => setIsShareModalOpen(true)}
+        >
           <PiShareFat className="text-[19px]" />
           {share_count ?? 0}
         </div>
       </div>
+
+      {isCommentBoxOpen ? <CommentBox /> : null}
+      <ShareModal
+        open={isShareModalOpen}
+        onCancel={() => setIsShareModalOpen(false)}
+        url={window.location.href + `post/${id}`}
+      />
     </div>
   );
 }
