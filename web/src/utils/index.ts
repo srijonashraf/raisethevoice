@@ -11,5 +11,5 @@ export const getUserFullName = (user?: UserT) => {
     return `${user.first_name} ${user.last_name}`;
   }
 
-  return 'N/A';
+  return user?.first_name ?? 'N/A';
 };
