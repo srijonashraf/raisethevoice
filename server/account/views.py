@@ -207,7 +207,7 @@ class FollowView(APIView):
         type = request.GET.get('type')
         if(type == 'suggestion'):
             following_ids  = Follow.objects.filter(follower=request.user).values_list('following_id',flat=True)
-            non_following = User.objects.exclude(id__in=following_ids).exclude(id=request.user.id)
+            non_following = User.objects.exclude(id__in=following_ids).exclude(id=request.user.id).order_by('?')[:5]
             serializer = UserSerializer(non_following, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
