@@ -204,12 +204,19 @@ def activate(request, uidb64, token):
 
 class FollowView(APIView):
     def get(self, request):
+        type = request.GET.get('type')
+        if(type == 'suggestion'):
+            following_ids  = Follow.objects.filter(follower=request.user).values_list('following_id',flat=True)
+            non_following = User.objects.exclude(id__in=following_ids).exclude(id=request.user.id).order_by('?')[:5]
+            serializer = UserSerializer(non_following, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
         followings = Follow.objects.filter(follower=request.user)
         serializer = FollowSerializer(followings, many=True)
         return Response(serializer.data)
 
     def post(self, request):
-        pk = request.GET.get('id')[:-1]
+        pk = request.GET.get('id')
         user = User.objects.filter(id=pk).first()
         exist = Follow.objects.filter(following=user, follower=request.user).first()
         if exist:
