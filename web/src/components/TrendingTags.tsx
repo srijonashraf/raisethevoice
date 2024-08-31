@@ -22,7 +22,10 @@ export default function TrendingTags() {
 
       <div className="flex flex-wrap gap-y-0.5 gap-x-2">
         {trendings.map((trending) => (
-          <div className="font-semibold text-[15px] cursor-pointer hover:bg-gray-100 rounded">
+          <div
+            key={trending.label}
+            className="font-semibold text-[15px] cursor-pointer hover:bg-gray-100 rounded"
+          >
             #{trending.label}
           </div>
         ))}

@@ -13,7 +13,25 @@ export const followApi = createApi({
         method: 'get',
       }),
     }),
+    getFollowSuggestion: builder.query({
+      query: () => ({
+        url: '/account/follow/',
+        method: 'get',
+        params: { type: 'suggestion' },
+      }),
+    }),
+    followUser: builder.mutation({
+      query: (data) => ({
+        url: '/account/follow/',
+        method: 'post',
+        params: data,
+      }),
+    }),
   }),
 });
 
-export const { useGetFollowedUsersQuery } = followApi;
+export const {
+  useGetFollowedUsersQuery,
+  useGetFollowSuggestionQuery,
+  useFollowUserMutation,
+} = followApi;
