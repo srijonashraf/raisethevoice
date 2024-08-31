@@ -1,4 +1,4 @@
-import { Skeleton } from 'antd';
+import { Empty, Skeleton } from 'antd';
 import { useState } from 'react';
 import {
   useFollowUserMutation,
@@ -8,7 +8,7 @@ import { UserT } from 'types';
 import { getUserFullName } from 'utils';
 
 export default function FollowSuggestion() {
-  const { data } = useGetFollowSuggestionQuery('');
+  const { data, isLoading } = useGetFollowSuggestionQuery('');
 
   return (
     <div>
@@ -16,11 +16,13 @@ export default function FollowSuggestion() {
         <h1 className="text-xl font-bold">Who to follow</h1>
       </div>
 
-      {data ? (
+      {!isLoading ? (
         <div className="flex flex-col gap-3">
-          {data.map((user: UserT) => (
-            <FollowProfile key={user.id} {...user} />
-          ))}
+          {data?.length ? (
+            data.map((user: UserT) => <FollowProfile key={user.id} {...user} />)
+          ) : (
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} className="mt-10" />
+          )}
         </div>
       ) : (
         <Skeleton title={false} paragraph={{ rows: 5 }} className="mt-4" />
