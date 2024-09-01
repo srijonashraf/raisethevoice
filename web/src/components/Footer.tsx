@@ -17,12 +17,12 @@ export default function Footer() {
     <div className="mt-8">
       <div className="flex justify-center gap-x-2 flex-wrap text-center text-sm">
         {links.map((link) => (
-          <>
+          <span key={link.to}>
             <Link {...link} className="hover:underline">
               {link.label}
             </Link>
             <span className="opacity-50">·</span>
-          </>
+          </span>
         ))}
       </div>
       <div className="text-center mt-2">© 2024 RaiseTheVoice</div>

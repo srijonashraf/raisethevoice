@@ -31,10 +31,10 @@ class SignUpView(APIView):
         serializer = UserSerializer(data=request.data)
 
         if User.objects.filter(email=request.data["email"]):
-            return Response({"detail": "Email Already Exist"}, status=status.HTTP_306_RESERVED)
+            return Response({"detail": "Email Already Exist"}, status=status.HTTP_400_BAD_REQUEST)
 
         if User.objects.filter(username=request.data["username"]):
-            return Response({"detail": "Username Already Exist"}, status=status.HTTP_306_RESERVED)
+            return Response({"detail": "Username Already Exist"}, status=status.HTTP_400_BAD_REQUEST)
 
         if serializer.is_valid():
             serializer.save()

@@ -14,7 +14,11 @@ const store = configureStore({
     auth,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authApi.middleware, feedApi.middleware),
+    getDefaultMiddleware().concat(
+      authApi.middleware,
+      feedApi.middleware,
+      followApi.middleware
+    ),
 });
 
 export default store;

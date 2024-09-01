@@ -1,4 +1,5 @@
-import { Button } from 'lib';
+import useErrors from 'hooks/useErrors';
+import { Button, ValidationLine } from 'lib';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -8,7 +9,9 @@ import {
   useRegisterUserMutation,
 } from 'store/api/auth';
 import { handleAuthModal } from 'store/prompt';
+import { showError, splitFullName } from 'utils';
 import storage from 'utils/storage';
+import * as yup from 'yup';
 import SignUpSuccess from './SignUpSuccess';
 
 enum AuthScreen {
@@ -32,6 +35,7 @@ export default function Auth() {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+  const { errors, clearError, validateForm } = useErrors();
 
   useEffect(() => {
     if (authScreen !== AuthScreen.SIGNUP_SUCCESS) {
@@ -49,37 +53,52 @@ export default function Auth() {
   }, []);
 
   const handleSignin = async () => {
-    try {
-      const payload = {
-        password: formValues.password,
-        email: formValues.email,
-        username: formValues.email,
-      };
-      const resp = await loginUser(payload).unwrap();
-      storage.set('access_token', resp.token);
-      loadUser('');
-      handleClose();
-    } catch (err) {
-      return;
-    }
+    validateForm({
+      schema: userSignInSchema,
+      data: formValues,
+      onOk: async () => {
+        try {
+          const payload = {
+            password: formValues.password,
+            email: formValues.email,
+            username: formValues.email,
+          };
+          const resp = await loginUser(payload).unwrap();
+          storage.set('access_token', resp.token);
+          loadUser('');
+          handleClose();
+        } catch (err) {
+          showError(err);
+        }
+      },
+    });
   };
 
   const handleSignup = async () => {
-    try {
-      const payload = {
-        first_name: formValues.full_name,
-        email: formValues.email,
-        password: formValues.password,
-        username: formValues.email,
-      };
-      await registerUser(payload).unwrap();
-      setAuthScreen(AuthScreen.SIGNUP_SUCCESS);
-    } catch (err) {
-      return;
-    }
+    validateForm({
+      schema: userSignUpSchema,
+      data: formValues,
+      onOk: async () => {
+        try {
+          const payload = {
+            ...splitFullName(formValues.full_name),
+            email: formValues.email,
+            password: formValues.password,
+            username: formValues.email,
+          };
+          await registerUser(payload).unwrap();
+          setAuthScreen(AuthScreen.SIGNUP_SUCCESS);
+        } catch (err) {
+          console.log('🚀 ~ onOk: ~ err:', err);
+          showError(err);
+        }
+      },
+    });
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    clearError(e.target.name);
+
     setFormValues({
       ...formValues,
       [e.target.name]: e.target.value,
@@ -132,6 +151,7 @@ export default function Auth() {
                   value={formValues?.full_name}
                   onChange={handleChange}
                   required
+                  error={errors['full_name']}
                 />
               )}
 
@@ -144,6 +164,7 @@ export default function Auth() {
                 value={formValues?.email}
                 onChange={handleChange}
                 required
+                error={errors['email']}
               />
 
               <AuthInput
@@ -155,6 +176,7 @@ export default function Auth() {
                 value={formValues?.password}
                 onChange={handleChange}
                 required
+                error={errors['password']}
               />
 
               <div className="mt-3">
@@ -178,7 +200,7 @@ export default function Auth() {
               </div>
             </div>
 
-            <div className="flex items-center justify-center gap-x-1">
+            <div className="flex items-center justify-center gap-x-1 mt-2">
               <p className="text-sm leading-relaxed text-grey-900">
                 {authScreen === AuthScreen.SIGNIN
                   ? 'Not registered yet?'
@@ -203,7 +225,7 @@ export default function Auth() {
   );
 }
 
-const AuthInput = ({ label, required, ...props }: any) => {
+const AuthInput = ({ label, required, error, ...props }: any) => {
   return (
     <div>
       <label
@@ -217,6 +239,7 @@ const AuthInput = ({ label, required, ...props }: any) => {
         className="flex items-center w-full px-5 py-4 mr-2 text-sm font-medium outline-none focus:bg-grey-400 placeholder:text-grey-700 bg-grey-200 text-dark-grey-900 rounded-2xl bg-gray-100 focus:bg-gray-200"
         {...props}
       />
+      <ValidationLine text={error} />
     </div>
   );
 };
@@ -233,3 +256,23 @@ const AuthInput = ({ label, required, ...props }: any) => {
 // 		</a>
 // 	);
 // };
+
+const userSignInSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email('Invalid email address')
+    .required('Email is required'),
+  password: yup.string().required('Password is required'),
+});
+
+const userSignUpSchema = yup.object().shape({
+  full_name: yup.string().required('Full name is required'),
+  email: yup
+    .string()
+    .email('Invalid email address')
+    .required('Email is required'),
+  password: yup
+    .string()
+    .required('Password is required')
+    .min(8, 'Password must be at least 8 characters long'),
+});

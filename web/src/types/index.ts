@@ -10,4 +10,14 @@ export type UserT = {
   is_active: boolean;
   date_joined: string;
   type: string;
+  profile?: UserProfileT;
+};
+
+export type UserProfileT = {
+  bio: string;
+  address: string;
+  website: string;
+  avatar: string;
+  phone: string;
+  email: string;
 };
