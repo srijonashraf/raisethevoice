@@ -13,10 +13,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { handlePostModal, requireAuth } from 'store/prompt';
 import ShareModal from './ShareModal';
-import { Dropdown } from 'antd';
+import { Dropdown, Modal } from 'antd';
 import { CiEdit } from 'react-icons/ci';
 import { MdOutlineReport, MdDeleteOutline } from 'react-icons/md';
 import { BsThreeDotsVertical } from 'react-icons/bs';
+import { ExclamationCircleFilled } from '@ant-design/icons';
+import { Button } from 'lib';
 
 dayjs.extend(relativeTime);
 
@@ -51,6 +53,26 @@ export default function PostSingle(props: PostT) {
 
     if (key === 'edit_post') {
       dispatch(handlePostModal({ open: true, postData: props }));
+    } else if (key === 'delete_post') {
+      Modal.confirm({
+        title: 'Do you want to delete this post?',
+        icon: <ExclamationCircleFilled />,
+        content: 'This action cannot be undone.',
+        onOk() {},
+        onCancel() {},
+        centered: true,
+        footer: () => (
+          <div className="flex justify-end gap-3">
+            <Button
+              className="bg-white border hover:bg-black text-black hover:text-white duration-500 ease-in-out px-3 py-1"
+              onClick={() => Modal.destroyAll()}
+            >
+              Cancel
+            </Button>
+            <Button onClick={() => {}}>Yes, Delete</Button>
+          </div>
+        ),
+      });
     }
   };
 
@@ -82,16 +104,20 @@ export default function PostSingle(props: PostT) {
             overlayStyle={{ paddingTop: 10, width: 150 }}
             menu={{
               items: [
-                {
-                  label: 'Edit Post',
-                  key: 'edit_post',
-                  icon: <CiEdit size={15} />,
-                },
-                {
-                  label: 'Delete Post',
-                  key: 'delete_post',
-                  icon: <MdDeleteOutline size={15} />,
-                },
+                ...(user?.id === author?.id
+                  ? [
+                      {
+                        label: 'Edit Post',
+                        key: 'edit_post',
+                        icon: <CiEdit size={15} />,
+                      },
+                      {
+                        label: 'Delete Post',
+                        key: 'delete_post',
+                        icon: <MdDeleteOutline size={15} />,
+                      },
+                    ]
+                  : []),
                 {
                   label: <span>Report Post</span>,
                   key: 'report_post',
