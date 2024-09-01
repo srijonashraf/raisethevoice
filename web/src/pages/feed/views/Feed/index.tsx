@@ -1,7 +1,8 @@
-import { Card, Empty, Skeleton } from 'antd';
+import { Empty } from 'antd';
+import FeedSkeleton from 'components/FeedSkeleton';
 import { useGetPostsQuery } from 'store/api/feed';
 import { PostT } from 'types/feed';
-import PostSingle from './PostSingle';
+import PostSingle from '../../../../components/PostSingle';
 
 export default function Feed() {
   const { data, isLoading } = useGetPostsQuery('');
@@ -22,15 +23,3 @@ export default function Feed() {
     </>
   );
 }
-
-const FeedSkeleton = () => {
-  return (
-    <div className="flex flex-col gap-3">
-      {Array.from({ length: 3 }).map((_, idx) => (
-        <Card key={idx}>
-          <Skeleton />
-        </Card>
-      ))}
-    </div>
-  );
-};

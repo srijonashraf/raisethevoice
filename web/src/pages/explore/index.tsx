@@ -2,15 +2,14 @@ import { Col, Row } from 'antd';
 import Footer from 'components/Footer';
 import TrendingPosts from 'components/TrendingPosts';
 import Feed from 'pages/feed/views/Feed';
+import Tabs from './Tabs';
 
 export default function ExplorePage() {
   return (
     <Row gutter={[40, 0]}>
       <Col span={18} className="col-span-4">
-        {/* <ExploreCardRow /> */}
-        <div className="">
-          <Feed />
-        </div>
+        <Tabs />
+        <Feed />
       </Col>
       <Col span={6} className="col-span-2">
         <div className="flex flex-col gap-5 sticky top-[88px]">

@@ -9,7 +9,7 @@ export const feedApi = createApi({
   tagTypes: ['Feed'],
   endpoints: (builder) => ({
     getPosts: builder.query({
-      query: () => ({ url: '/feed/', method: 'get' }),
+      query: (params) => ({ url: '/feed/', method: 'get', params }),
       providesTags: ['Feed'],
     }),
     createPost: builder.mutation({
@@ -33,6 +33,7 @@ export const feedApi = createApi({
 
 export const {
   useGetPostsQuery,
+  useLazyGetPostsQuery,
   useCreatePostMutation,
   useGetSinglePostQuery,
   useGetTrendingPostsQuery,
