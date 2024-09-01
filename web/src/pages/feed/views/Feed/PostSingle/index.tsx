@@ -11,8 +11,12 @@ import CommentBox from './CommentBox';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
-import { requireAuth } from 'store/prompt';
+import { handlePostModal, requireAuth } from 'store/prompt';
 import ShareModal from './ShareModal';
+import { Dropdown } from 'antd';
+import { CiEdit } from 'react-icons/ci';
+import { MdOutlineReport, MdDeleteOutline } from 'react-icons/md';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 
 dayjs.extend(relativeTime);
 
@@ -39,6 +43,17 @@ export default function PostSingle(props: PostT) {
     }
   };
 
+  const handlePostActions = (key: string) => {
+    if (!user) {
+      dispatch(requireAuth());
+      return;
+    }
+
+    if (key === 'edit_post') {
+      dispatch(handlePostModal({ open: true, postData: props }));
+    }
+  };
+
   return (
     <div className="w-full rounded-xl border p-5 shadow-sm bg-white">
       <div className="flex w-full items-center justify-between border-b pb-3">
@@ -51,7 +66,7 @@ export default function PostSingle(props: PostT) {
             {author.first_name + ' ' + author.last_name}
           </div>
         </div>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2">
           {/* <button className="rounded-2xl border bg-neutral-100 px-3 py-1 text-xs font-medium">
 						##
 					</button> */}
@@ -61,6 +76,36 @@ export default function PostSingle(props: PostT) {
               : null}{' '}
             ago
           </div>
+          <Dropdown
+            trigger={['click']}
+            placement="bottomRight"
+            overlayStyle={{ paddingTop: 10, width: 150 }}
+            menu={{
+              items: [
+                {
+                  label: 'Edit Post',
+                  key: 'edit_post',
+                  icon: <CiEdit size={15} />,
+                },
+                {
+                  label: 'Delete Post',
+                  key: 'delete_post',
+                  icon: <MdDeleteOutline size={15} />,
+                },
+                {
+                  label: <span>Report Post</span>,
+                  key: 'report_post',
+                  icon: <MdOutlineReport size={15} />,
+                  danger: true,
+                },
+              ],
+              onClick: (event) => handlePostActions(event.key),
+            }}
+          >
+            <button className="hover:bg-gray-200 p-1 rounded-md duration-300 ease-in-out focus:bg-gray-200">
+              <BsThreeDotsVertical className="text-xs text-neutral-500" />
+            </button>
+          </Dropdown>
         </div>
       </div>
 
