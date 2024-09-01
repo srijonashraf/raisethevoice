@@ -4,6 +4,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path('', PostView.as_view()),
+    path('explore/', ExploreView.as_view()),
     path('my-posts/', MyPostView.as_view()),
     path('<int:pk>/', SinglePostView.as_view()),
     path('trending/', TrendingPostView.as_view()),
