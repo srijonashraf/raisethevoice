@@ -19,6 +19,10 @@ export const feedApi = createApi({
     getSinglePost: builder.query({
       query: (id: number) => ({ url: `/feed/${id}`, method: 'get' }),
     }),
+    getExploredPosts: builder.query({
+      query: (params) => ({ url: '/feed/explore', method: 'get', params }),
+      providesTags: ['Feed'],
+    }),
     getTrendingPosts: builder.query({
       query: () => ({ url: '/feed/trending/', method: 'get' }),
     }),
@@ -36,6 +40,7 @@ export const {
   useLazyGetPostsQuery,
   useCreatePostMutation,
   useGetSinglePostQuery,
+  useGetExploredPostsQuery,
   useGetTrendingPostsQuery,
   useSubmitVoteMutation,
 } = feedApi;

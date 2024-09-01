@@ -1,8 +1,8 @@
 import { Col, Row } from 'antd';
 import Footer from 'components/Footer';
 import TrendingPosts from 'components/TrendingPosts';
-import Feed from 'pages/feed/views/Feed';
 import Tabs from './Tabs';
+import Feed from './Feed';
 
 export default function ExplorePage() {
   return (

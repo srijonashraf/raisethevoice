@@ -14,18 +14,24 @@ export default function Tabs() {
   const [activeTab, setActiveTab] = useState(tabs[0].key);
 
   return (
-    <ul className="flex flex-wrap gap-5 text-sm font-medium text-center text-gray-500 border-b border-gray-200 mb-5">
-      {tabs.map((tab) => (
-        <li
-          key={tab.key}
-          className={cn('inline-block p-4 rounded-t-lg cursor-pointer', {
-            'border-b-2 border-black': tab.key === activeTab,
-          })}
-          onClick={() => setActiveTab(tab.key)}
-        >
-          {tab.label}
-        </li>
-      ))}
-    </ul>
+    <div className="">
+      <ul className="pt-6 flex w-full max-w-[785px] gap-5 text-sm font-medium text-center text-gray-500 border-b border-gray-200 mb-5 fixed bg-white z-50">
+        {tabs.map((tab) => (
+          <li
+            key={tab.key}
+            className={cn(
+              'inline-block p-4 rounded-t-lg cursor-pointer border-black hover:border-b-2',
+              {
+                'border-b-2': tab.key === activeTab,
+              }
+            )}
+            onClick={() => setActiveTab(tab.key)}
+          >
+            {tab.label}
+          </li>
+        ))}
+      </ul>
+      <div className="h-[95px]" />
+    </div>
   );
 }
