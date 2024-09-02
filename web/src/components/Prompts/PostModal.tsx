@@ -1,6 +1,6 @@
 import { Image, Upload } from 'antd';
 import { Button, Input, Modal, TextArea } from 'lib';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FcGallery } from 'react-icons/fc';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
@@ -24,6 +24,14 @@ export default function PostModal() {
   const { postModal } = useSelector((state: RootState) => state.prompt);
   const dispatch = useDispatch();
   const [createPost, { isLoading }] = useCreatePostMutation();
+  const { title: getTitle, content: getContent } = postModal?.postData || {};
+
+  useEffect(() => {
+    if (getTitle && getContent) {
+      setTitle(getTitle);
+      setContent(getContent);
+    }
+  }, [getContent, getTitle]);
 
   const handlePost = async () => {
     try {
@@ -42,6 +50,7 @@ export default function PostModal() {
 
   const handleClose = () => {
     dispatch(handlePostModal({ open: false }));
+    resetStates();
   };
 
   return (
@@ -60,6 +69,7 @@ export default function PostModal() {
           onChange={(e) => setContent(e.target.value)}
           rows={8}
         />
+
         <PostType />
         <Button onClick={handlePost} loading={isLoading}>
           Post

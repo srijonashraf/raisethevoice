@@ -4,6 +4,7 @@ export type AuthorT = {
   username: string;
   email: string;
   is_active: number;
+  id: number;
 };
 
 export type PostT = {
