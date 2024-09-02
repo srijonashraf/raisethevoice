@@ -57,31 +57,31 @@ export default function ShareModal({ url, ...props }: ShareModalProps) {
       <h5 className="text-base">Share</h5>
       <div className="pt-4 flex items-center gap-3">
         <SocialIcon
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQKrFhY-ljA-u7J5IMWeTv8zmpBx4PP9nQMw&s"
+          src="socials/facebook.png"
           onClick={handleSocialShare(SocialMedia.FACEBOOK)}
         />
         <SocialIcon
-          src="https://img.freepik.com/free-vector/new-2023-twitter-logo-x-icon-design_1017-45418.jpg"
+          src="socials/twitter.png"
           onClick={handleSocialShare(SocialMedia.X)}
         />
         <SocialIcon
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjaNzRXVVvpTaJO0OnLNF7jbkCAlulF_myGg&s"
+          src="socials/whatsapp.png"
           onClick={handleSocialShare(SocialMedia.WHATSAPP)}
         />
         <SocialIcon
-          src="https://cdn.imgbin.com/10/12/19/imgbin-reddit-logo-youtube-dressed-kr14YVybft24Mcg8HhHGG7BC4.jpg"
+          src="socials/reddit.png"
           onClick={handleSocialShare(SocialMedia.REDDIT)}
         />
         <SocialIcon
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/1200px-Telegram_logo.svg.png"
+          src="socials/telegram.png"
           onClick={handleSocialShare(SocialMedia.TELEGRAM)}
         />
         <SocialIcon
-          src="https://cdn1.iconfinder.com/data/icons/logotypes/32/circle-linkedin-512.png"
+          src="socials/linkedin.png"
           onClick={handleSocialShare(SocialMedia.LINKEDIN)}
         />
         <SocialIcon
-          src="https://static-00.iconduck.com/assets.00/pinterest-icon-512x512-3vn0ggs9.png"
+          src="socials/pinterest.png"
           onClick={handleSocialShare(SocialMedia.PINTEREST)}
         />
       </div>

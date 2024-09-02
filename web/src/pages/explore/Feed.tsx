@@ -1,11 +1,11 @@
 import { Empty } from 'antd';
 import FeedSkeleton from 'components/FeedSkeleton';
-import { useGetPostsQuery } from 'store/api/feed';
+import PostSingle from 'components/PostSingle';
+import { useGetExploredPostsQuery } from 'store/api/feed';
 import { PostT } from 'types/feed';
-import PostSingle from '../../../../components/PostSingle';
 
 export default function Feed() {
-  const { data, isLoading } = useGetPostsQuery('');
+  const { data, isLoading } = useGetExploredPostsQuery('');
 
   return (
     <>

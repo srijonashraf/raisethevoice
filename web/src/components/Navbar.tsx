@@ -1,13 +1,39 @@
 import { Dropdown, Menu } from 'antd';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom';
 import { RootState } from 'store';
 import { handleAuthModal } from 'store/prompt';
 import storage from 'utils/storage';
 
 export default function Navbar() {
+  const [searchQuery, setSearchQuery] = useState('');
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (searchQuery && location.pathname !== '/search') {
+      setSearchQuery('');
+    } else if (location.pathname === '/search') {
+      const query = searchParams.get('q');
+      if (query) {
+        setSearchQuery(query);
+      }
+    }
+  }, [location]);
+
+  const handleSearch = (e: any) => {
+    e.preventDefault();
+    navigate(`/search?q=${searchQuery}`);
+  };
 
   return (
     <div>
@@ -23,7 +49,7 @@ export default function Navbar() {
               <div className="hidden sm:block sm:ml-6">
                 <div className="flex ml-2">
                   <div className="relative mt-1">
-                    <form onSubmit={() => {}}>
+                    <form onSubmit={handleSearch}>
                       <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <svg
                           className="w-5 h-5 text-gray-500"
@@ -40,11 +66,10 @@ export default function Navbar() {
                       </div>
                       <input
                         type="text"
-                        id="table-search"
                         className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:border-gray-300 block w-80 pl-10 py-2"
                         placeholder="Search"
-                        value={''}
-                        onChange={() => {}}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                       />
                     </form>
                   </div>

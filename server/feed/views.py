@@ -55,6 +55,14 @@ class PostView(APIView):
         else:
             return Response(post_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class ExploreView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get(self, request):
+        posts = Post.objects.filter(is_active=True).order_by('-id')
+        post_serializer = PostSerializer(posts, many=True, context={'request': request})
+        return Response(post_serializer.data)
+
 
 class SinglePostView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]

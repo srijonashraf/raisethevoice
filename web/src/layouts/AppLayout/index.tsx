@@ -7,7 +7,7 @@ import SidebarMobile from './views/SidebarMobile';
 export default function AppLayout() {
   return (
     <>
-      <div className="max-w-7xl mx-auto mt-6">
+      <div className="max-w-7xl mx-auto">
         <Row gutter={[32, 0]}>
           <Col xs={0} md={4}>
             <Sidebar />
