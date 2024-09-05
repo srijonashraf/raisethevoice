@@ -127,9 +127,16 @@ class LogoutView(APIView):
 
 class ProfileView(APIView):
     def get(self, request):
-        profile = Profile.objects.filter(user=request.user).first()
-        profile_serializer = ProfileSerializer(profile)
-        return Response(profile_serializer.data)
+        user_id = request.GET.get('user_id')
+
+        if user_id:
+            user_profile = Profile.objects.filter(user_id=user_id).first()
+            serializer = ProfileSerializer(user_profile)
+            return Response(serializer.data)
+        
+        own_profile = Profile.objects.filter(user=request.user).first()
+        serializer = ProfileSerializer(own_profile)
+        return Response(serializer.data)
 
     def post(self, request):
         if not request.user:
@@ -142,26 +149,35 @@ class ProfileView(APIView):
             return Response(status=status.HTTP_226_IM_USED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self, request, pk):
-        data = request.data
-        profile = Profile.objects.filter(id=pk).first()
-        user = User.objects.filter(id=request.user.id).first()
-        if data.get('first_name'):
-            user.first_name = data['first_name']
+    def put(self, request):
+        try:
+            data = request.data
+            user = User.objects.filter(id=request.user.id).first()
+
+            if data.get('first_name'):
+                user.first_name = data['first_name']
+            if data.get('last_name'):
+                user.last_name = data['last_name']
+            if data.get('username'):
+                user.username = data['username']
+            
             user.save()
-        if data.get('last_name'):
-            user.last_name = data['last_name']
-            user.save()
-        if profile:
-            serializer = ProfileSerializer(profile, data=data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-        return Response(serializer.errors,
+
+            if data.get('bio'):
+                profile = Profile.objects.get(user=request.user)
+
+                if profile:
+                    serializer = ProfileSerializer(profile, data=data)
+
+                    if serializer.is_valid():
+                        serializer.save()
+                        return Response(serializer.data)
+        except:
+            return Response(serializer.errors,
                         status=status.HTTP_400_BAD_REQUEST)
 
 
-def ping(request):
+def ping():
     return HttpResponse('pong')
 
 

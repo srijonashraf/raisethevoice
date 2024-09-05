@@ -15,6 +15,7 @@ class PostView(APIView):
         search_query = request.GET.get('q')
         filter_query = request.GET.get('query')
         filter_tag = request.GET.get('tag')
+        author_id = request.GET.get('author_id')
 
         if search_query:
             posts = Post.objects.filter(is_active=True).filter(
@@ -30,6 +31,9 @@ class PostView(APIView):
         elif filter_query and filter_tag:
             posts = Post.objects.filter(is_active=True).filter(
                 title__icontains=filter_query).filter(tag=filter_tag).order_by('-id')
+            
+        elif author_id:
+            posts = Post.objects.filter(is_active=True).filter(author_id=author_id)
 
         else:
             if request.user.is_authenticated:

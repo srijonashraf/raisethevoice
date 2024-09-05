@@ -25,7 +25,9 @@ export default function SearchPage() {
         {!isLoading ? (
           <div className="flex flex-col gap-3 mb-5">
             {data?.length ? (
-              data.map((post: PostT) => <PostSingle key={post.id} {...post} />)
+              data.map((post: PostT) => (
+                <PostSingle key={post.id} post={post} />
+              ))
             ) : (
               <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} className="pt-10" />
             )}

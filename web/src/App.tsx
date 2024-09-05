@@ -1,5 +1,6 @@
 import Navbar from 'components/Navbar';
 import AppLayout from 'layouts/AppLayout';
+import AuthGuard from 'layouts/AuthGuard';
 import AboutPage from 'pages/about';
 import ContactPage from 'pages/contact';
 import ExplorePage from 'pages/explore';
@@ -7,6 +8,7 @@ import FeedPage from 'pages/feed';
 import LoginPage from 'pages/login';
 import PostPage from 'pages/post';
 import PrivacyPage from 'pages/privacy';
+import ProfilePage from 'pages/profile';
 import SearchPage from 'pages/search';
 import TermsPage from 'pages/terms';
 import { useEffect } from 'react';
@@ -29,6 +31,10 @@ export default function App() {
           <Route path="post/:id" element={<PostPage />} />
           <Route path="explore" element={<ExplorePage />} />
           <Route path="search" element={<SearchPage />} />
+          <Route path="search" element={<SearchPage />} />
+          <Route element={<AuthGuard />}>
+            <Route path="profile/:userId?" element={<ProfilePage />} />
+          </Route>
         </Route>
         <Route path="login" element={<LoginPage />} />
         <Route path="about" element={<AboutPage />} />
