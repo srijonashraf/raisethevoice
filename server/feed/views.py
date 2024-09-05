@@ -103,17 +103,22 @@ class ReportView(APIView):
     def post(self, request, post_id):
         post = get_object_or_404(Post, id=post_id)
 
+        # Check if the user is trying to report their own post
         if post.author == request.user:
             return Response({"error": "You cannot report your own post."}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Check if the user has already reported this post
         if Report.objects.filter(user=request.user, post=post).exists():
             return Response({"error": "You have already reported this post."}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Create the report if validation passed
         serializer = ReportSerializer(data=request.data, context={'request': request, 'post': post})
         if serializer.is_valid():
             serializer.save(user=request.user, post=post)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class TrendingPostView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]

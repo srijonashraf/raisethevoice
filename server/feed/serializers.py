@@ -39,15 +39,7 @@ class PostSerializer(serializers.ModelSerializer):
 class ReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Report
-        fields = ['id', 'type']  # 'post' and 'user' are excluded as they are handled in the view
-
-    def validate(self, data):
-        request = self.context['request']
-        post = self.context['post']
-        if post.author == request.user:
-            raise serializers.ValidationError("You cannot report your own post.")
-        return data
-
+        fields = ['id', 'type'] 
 
 class VoteSerializer(serializers.ModelSerializer):
     class Meta:
