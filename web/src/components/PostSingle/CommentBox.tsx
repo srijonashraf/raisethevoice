@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { IoSend } from 'react-icons/io5';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
-import { cn, getUserFullName } from 'utils';
+import { cn, getUserAvatar, getUserFullName } from 'utils';
 
 type CommentBoxProps = {
   className?: string;
@@ -25,7 +25,7 @@ export default function CommentBox({ className }: CommentBoxProps) {
   return (
     <div className={cn('w-full flex gap-3 pt-5', className)}>
       <img
-        src="/default-avatar.webp"
+        src={getUserAvatar(user?.profile)}
         alt="default avatar"
         className="w-8 h-8 rounded-full"
       />

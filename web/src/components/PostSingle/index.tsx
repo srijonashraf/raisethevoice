@@ -6,44 +6,57 @@ import { PiShareFat } from 'react-icons/pi';
 import { Link } from 'react-router-dom';
 import { PostT } from 'types/feed';
 import { createMarkup } from 'utils/misc';
-import Vote from './Vote';
-import CommentBox from './CommentBox';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { handlePostModal, requireAuth } from 'store/prompt';
-import ShareModal from './ShareModal';
 import { Dropdown, Modal } from 'antd';
 import { CiEdit } from 'react-icons/ci';
 import { MdOutlineReport, MdDeleteOutline } from 'react-icons/md';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { Button } from 'lib';
+import Vote from 'components/PostSingle/Vote';
+import CommentBox from 'components/PostSingle/CommentBox';
+import ShareModal from 'components/PostSingle/ShareModal';
+import { getUserAvatar } from 'utils';
 
 dayjs.extend(relativeTime);
 
-export default function PostSingle(props: PostT) {
-  const [isCommentBoxOpen, setIsCommentBoxOpen] = useState(false);
-  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const { user } = useSelector((state: RootState) => state.auth);
-  const dispatch = useDispatch();
-  const {
-    author,
-    created_at,
-    id,
-    title,
-    content,
-    total_comments,
-    share_count,
-  } = props;
+type PostSingleProps = {
+  post: PostT;
+};
 
-  const onCommentClick = () => {
-    if (user) {
-      setIsCommentBoxOpen(true);
-    } else {
-      dispatch(requireAuth());
-    }
-  };
+export default function PostSingle(props: PostSingleProps) {
+  const { id, title, content } = props.post;
+
+  return (
+    <div className="w-full rounded-xl border p-4 shadow-sm bg-white">
+      <PostHeader {...props} />
+
+      <Link to={`/post/${id}`} className="mt-3 inline-block">
+        {title ? (
+          <div className="mb-1.5 text-xl font-medium">{title}</div>
+        ) : null}
+
+        <div className="text-sm text-neutral-600">
+          <div
+            dangerouslySetInnerHTML={createMarkup(
+              _.truncate(content, { length: 300 })
+            )}
+          />
+        </div>
+      </Link>
+
+      <ActionBar {...props} />
+    </div>
+  );
+}
+
+const PostHeader = ({ post }: PostSingleProps) => {
+  const { user } = useSelector((state: RootState) => state.auth);
+  const { author, created_at } = post;
+  const dispatch = useDispatch();
 
   const handlePostActions = (key: string) => {
     if (!user) {
@@ -52,7 +65,7 @@ export default function PostSingle(props: PostT) {
     }
 
     if (key === 'edit_post') {
-      dispatch(handlePostModal({ open: true, postData: props }));
+      dispatch(handlePostModal({ open: true, postData: post }));
     } else if (key === 'delete_post') {
       Modal.confirm({
         title: 'Do you want to delete this post?',
@@ -77,81 +90,81 @@ export default function PostSingle(props: PostT) {
   };
 
   return (
-    <div className="w-full rounded-xl border p-5 shadow-sm bg-white">
-      <div className="flex w-full items-center justify-between border-b pb-3">
-        <div className="flex items-center space-x-3">
-          <img
-            src="default-avatar.webp"
-            className="h-8 w-8 rounded-full object-cover"
-          />
-          <div className="text-lg font-bold text-slate-700">
-            {author.first_name + ' ' + author.last_name}
-          </div>
+    <div className="flex w-full items-center justify-between">
+      <Link to={`/profile/${author.id}`} className="flex items-center gap-3">
+        <img
+          src={getUserAvatar(author.profile)}
+          className="h-8 w-8 rounded-full object-cover"
+        />
+        <div className="text-lg font-semibold text-slate-700">
+          {author.first_name + ' ' + author.last_name}
         </div>
-        <div className="flex items-center space-x-2">
-          {/* <button className="rounded-2xl border bg-neutral-100 px-3 py-1 text-xs font-medium">
-						##
-					</button> */}
-          <div className="text-xs text-neutral-500">
-            {created_at
-              ? dayjs(`${new Date(created_at).toUTCString()}`).fromNow(true)
-              : null}{' '}
-            ago
-          </div>
-          <Dropdown
-            trigger={['click']}
-            placement="bottomRight"
-            overlayStyle={{ paddingTop: 10, width: 150 }}
-            menu={{
-              items: [
-                ...(user?.id === author?.id
-                  ? [
-                      {
-                        label: 'Edit Post',
-                        key: 'edit_post',
-                        icon: <CiEdit size={15} />,
-                      },
-                      {
-                        label: 'Delete Post',
-                        key: 'delete_post',
-                        icon: <MdDeleteOutline size={15} />,
-                      },
-                    ]
-                  : []),
-                {
-                  label: <span>Report Post</span>,
-                  key: 'report_post',
-                  icon: <MdOutlineReport size={15} />,
-                  danger: true,
-                },
-              ],
-              onClick: (event) => handlePostActions(event.key),
-            }}
-          >
-            <button className="hover:bg-gray-200 p-1 rounded-md duration-300 ease-in-out focus:bg-gray-200">
-              <BsThreeDotsVertical className="text-xs text-neutral-500" />
-            </button>
-          </Dropdown>
+      </Link>
+      <div className="flex items-center space-x-2">
+        <div className="text-xs text-neutral-500">
+          {created_at
+            ? dayjs(`${new Date(created_at).toUTCString()}`).fromNow(true)
+            : null}{' '}
+          ago
         </div>
+        <Dropdown
+          trigger={['click']}
+          placement="bottomRight"
+          overlayStyle={{ paddingTop: 10, width: 150 }}
+          menu={{
+            items: [
+              ...(user?.id === author?.id
+                ? [
+                    {
+                      label: 'Edit Post',
+                      key: 'edit_post',
+                      icon: <CiEdit size={15} />,
+                    },
+                    {
+                      label: 'Delete Post',
+                      key: 'delete_post',
+                      icon: <MdDeleteOutline size={15} />,
+                    },
+                  ]
+                : []),
+              {
+                label: <span>Report Post</span>,
+                key: 'report_post',
+                icon: <MdOutlineReport size={15} />,
+                danger: true,
+              },
+            ],
+            onClick: (event) => handlePostActions(event.key),
+          }}
+        >
+          <button className="hover:bg-gray-200 p-1 rounded-md duration-300 ease-in-out focus:bg-gray-200">
+            <BsThreeDotsVertical className="text-xs text-neutral-500" />
+          </button>
+        </Dropdown>
       </div>
+    </div>
+  );
+};
 
-      <div className="mt-4 mb-2">
-        <Link to={`/post/${id}`} className="">
-          {title ? (
-            <div className="mb-3 text-xl font-semibold">{title}</div>
-          ) : null}
-          <div className="text-sm text-neutral-600">
-            <div
-              dangerouslySetInnerHTML={createMarkup(
-                _.truncate(content, { length: 300 })
-              )}
-            />
-          </div>
-        </Link>
-      </div>
+const ActionBar = (props: PostSingleProps) => {
+  const [isCommentBoxOpen, setIsCommentBoxOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
+  const { id, total_comments, share_count } = props.post;
 
-      <div className="flex items-center gap-2.5 mt-4">
-        <Vote {...props} />
+  const onCommentClick = () => {
+    if (user) {
+      setIsCommentBoxOpen(true);
+    } else {
+      dispatch(requireAuth());
+    }
+  };
+
+  return (
+    <div>
+      <div className="flex items-center gap-2.5 mt-3">
+        <Vote {...props.post} />
         <div
           className="bg-gray-100 hover:bg-gray-200 cursor-pointer h-8 px-2.5 rounded-full flex gap-1.5 items-center justify-center"
           onClick={onCommentClick}
@@ -176,4 +189,4 @@ export default function PostSingle(props: PostT) {
       />
     </div>
   );
-}
+};

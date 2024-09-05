@@ -3,8 +3,8 @@ import { cn } from 'utils';
 
 type TextAreaProps = {
   name?: string;
-  value: string;
-  onChange: (event: ChangeEvent<HTMLTextAreaElement>) => void;
+  value?: string;
+  onChange?: (event: ChangeEvent<HTMLTextAreaElement>) => void;
   placeholder?: string;
   required?: boolean;
   disabled?: boolean;

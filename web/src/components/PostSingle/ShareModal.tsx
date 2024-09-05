@@ -57,31 +57,31 @@ export default function ShareModal({ url, ...props }: ShareModalProps) {
       <h5 className="text-base">Share</h5>
       <div className="pt-4 flex items-center gap-3">
         <SocialIcon
-          src="socials/facebook.png"
+          src="/socials/facebook.png"
           onClick={handleSocialShare(SocialMedia.FACEBOOK)}
         />
         <SocialIcon
-          src="socials/twitter.png"
+          src="/socials/twitter.png"
           onClick={handleSocialShare(SocialMedia.X)}
         />
         <SocialIcon
-          src="socials/whatsapp.png"
+          src="/socials/whatsapp.png"
           onClick={handleSocialShare(SocialMedia.WHATSAPP)}
         />
         <SocialIcon
-          src="socials/reddit.png"
+          src="/socials/reddit.png"
           onClick={handleSocialShare(SocialMedia.REDDIT)}
         />
         <SocialIcon
-          src="socials/telegram.png"
+          src="/socials/telegram.png"
           onClick={handleSocialShare(SocialMedia.TELEGRAM)}
         />
         <SocialIcon
-          src="socials/linkedin.png"
+          src="/socials/linkedin.png"
           onClick={handleSocialShare(SocialMedia.LINKEDIN)}
         />
         <SocialIcon
-          src="socials/pinterest.png"
+          src="/socials/pinterest.png"
           onClick={handleSocialShare(SocialMedia.PINTEREST)}
         />
       </div>

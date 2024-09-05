@@ -1,11 +1,12 @@
 import { Empty, Skeleton } from 'antd';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   useFollowUserMutation,
   useGetFollowSuggestionQuery,
 } from 'store/api/follow';
 import { UserT } from 'types';
-import { getUserFullName } from 'utils';
+import { getUserAvatar, getUserFullName } from 'utils';
 
 export default function FollowSuggestion() {
   const { data, isLoading } = useGetFollowSuggestionQuery('');
@@ -43,17 +44,17 @@ const FollowProfile = (user: UserT) => {
 
   return (
     <div className="flex items-center justify-between">
-      <div className="flex items-center gap-2">
+      <Link to={`/profile/${user.id}`} className="flex items-center gap-2">
         <img
           className="w-10 h-10 rounded-full object-cover"
-          src={profile?.avatar ?? 'default-avatar.webp'}
+          src={getUserAvatar(profile)}
           alt="avatar"
         />
         <div>
           <h5 className="text-sm font-semibold">{getUserFullName(user)}</h5>
           <p>@{username.slice(0, 12)}</p>
         </div>
-      </div>
+      </Link>
       <button
         onClick={onfollow}
         className="block bg-gray-900 hover:bg-gray-800 rounded-full px-4 text-white font-normal py-1.5"
