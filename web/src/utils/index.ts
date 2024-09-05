@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import classNames from 'classnames';
 import { twMerge } from 'tailwind-merge';
-import { UserT } from 'types';
+import { UserProfileT, UserT } from 'types';
 
 export function cn(...inputs: any) {
   return twMerge(classNames(inputs));
@@ -21,6 +21,10 @@ export function splitFullName(fullName: string) {
 
   return { first_name, last_name };
 }
+
+export const getUserAvatar = (profile?: UserProfileT) => {
+  return profile?.avatar || '/default-avatar.webp';
+};
 
 export const showError = ({ data }: any) => {
   message.error(data?.detail ?? data.non_field_errors?.[0]);

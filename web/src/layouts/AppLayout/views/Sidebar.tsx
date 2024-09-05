@@ -33,7 +33,6 @@ export default function Sidebar() {
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-  console.log('🚀 ~ Sidebar ~ location:', location);
 
   const onWritePost = () => {
     if (user) {
@@ -44,8 +43,8 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="max-w-xl sticky top-[88px] mx-auto">
-      <aside className="w-full" aria-label="Sidebar">
+    <div className="sticky top-[88px] mx-auto">
+      <aside className="w-full">
         <div className="pb-4 overflow-y-auto rounded">
           <div className="space-y-2">
             {navItems.map((navItem) => (

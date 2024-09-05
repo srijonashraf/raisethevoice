@@ -1,24 +1,19 @@
-import { Col, Row } from 'antd';
+import Prompts from 'components/Prompts';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './views/Sidebar';
-import Prompts from 'components/Prompts';
-import SidebarMobile from './views/SidebarMobile';
 
 export default function AppLayout() {
   return (
     <>
-      <div className="max-w-7xl mx-auto">
-        <Row gutter={[32, 0]}>
-          <Col xs={0} md={4}>
-            <Sidebar />
-          </Col>
-          <Col xs={24} md={20}>
-            <Outlet />
-          </Col>
-        </Row>
+      <div className="max-w-7xl mx-auto flex gap-8">
+        <div className="w-[190px]">
+          <Sidebar />
+        </div>
+        <div className="flex-1">
+          <Outlet />
+        </div>
       </div>
       <Prompts />
-      <SidebarMobile />
     </>
   );
 }

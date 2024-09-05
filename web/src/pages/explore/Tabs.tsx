@@ -15,12 +15,12 @@ export default function Tabs() {
 
   return (
     <div className="">
-      <ul className="pt-6 flex w-full max-w-[785px] gap-5 text-sm font-medium text-center text-gray-500 border-b border-gray-200 mb-5 fixed bg-white z-50">
+      <ul className="flex w-full max-w-[785px] gap-5 text-sm font-medium text-center text-gray-500 border-b border-gray-200 fixed bg-white z-50">
         {tabs.map((tab) => (
           <li
             key={tab.key}
             className={cn(
-              'inline-block p-4 rounded-t-lg cursor-pointer border-black hover:border-b-2',
+              'inline-block p-4 pt-6 rounded-t-lg cursor-pointer border-black hover:border-b-2',
               {
                 'border-b-2': tab.key === activeTab,
               }
@@ -31,7 +31,7 @@ export default function Tabs() {
           </li>
         ))}
       </ul>
-      <div className="h-[95px]" />
+      <div className="h-[85px]" />
     </div>
   );
 }

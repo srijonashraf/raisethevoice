@@ -4,8 +4,8 @@ import { cn } from 'utils';
 type InputProps = {
   type?: string;
   name?: string;
-  value: string;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   required?: boolean;
   disabled?: boolean;

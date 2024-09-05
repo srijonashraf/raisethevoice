@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom';
 import { RootState } from 'store';
 import { handleAuthModal } from 'store/prompt';
+import { getUserAvatar } from 'utils';
 import storage from 'utils/storage';
 
 export default function Navbar() {
@@ -97,6 +98,8 @@ export default function Navbar() {
 }
 
 const NavbarDropdown = () => {
+  const { user } = useSelector((state: RootState) => state.auth);
+
   const handleLogout = () => {
     storage.clear();
     window.location.reload();
@@ -138,7 +141,7 @@ const NavbarDropdown = () => {
         <span className="sr-only">Open user menu</span>
         <img
           className="h-8 w-8 rounded-full"
-          src="/default-avatar.webp"
+          src={getUserAvatar(user?.profile)}
           alt="profile"
         />
       </button>

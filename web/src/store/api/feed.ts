@@ -1,5 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import axiosBaseQuery from './queries';
+import { PostT } from 'types/feed';
 
 export const feedApi = createApi({
   reducerPath: 'feedApi',
@@ -8,8 +9,12 @@ export const feedApi = createApi({
   }),
   tagTypes: ['Feed'],
   endpoints: (builder) => ({
-    getPosts: builder.query({
+    getPosts: builder.query<PostT[], any>({
       query: (params) => ({ url: '/feed/', method: 'get', params }),
+      providesTags: ['Feed'],
+    }),
+    getUserPosts: builder.query<PostT[], any>({
+      query: (params) => ({ url: '/feed/my-posts/', method: 'get', params }),
       providesTags: ['Feed'],
     }),
     createPost: builder.mutation({
@@ -38,6 +43,7 @@ export const feedApi = createApi({
 export const {
   useGetPostsQuery,
   useLazyGetPostsQuery,
+  useGetUserPostsQuery,
   useCreatePostMutation,
   useGetSinglePostQuery,
   useGetExploredPostsQuery,

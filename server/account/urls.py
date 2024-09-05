@@ -12,7 +12,7 @@ urlpatterns = [
     path('users/', views.UsersView.as_view()),
     path('avatar/', views.AvatarView.as_view()),
     path('change-password/', views.ChangePassword.as_view()),
-    path('profile/<int:pk>/', views.ProfileView.as_view()),
+    path('profile/', views.ProfileView.as_view()),
     path('activate/<uidb64>/<token>/', views.activate, name='activate'),
 
     path('ping/', views.ping)

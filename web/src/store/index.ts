@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { authApi } from './api/auth';
 import { feedApi } from './api/feed';
 import { followApi } from './api/follow';
+import { userApi } from './api/user';
 import prompt from './prompt';
 import auth from './auth';
 
@@ -10,6 +11,7 @@ const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [feedApi.reducerPath]: feedApi.reducer,
     [followApi.reducerPath]: followApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
     prompt,
     auth,
   },
@@ -17,7 +19,8 @@ const store = configureStore({
     getDefaultMiddleware().concat(
       authApi.middleware,
       feedApi.middleware,
-      followApi.middleware
+      followApi.middleware,
+      userApi.middleware
     ),
 });
 
