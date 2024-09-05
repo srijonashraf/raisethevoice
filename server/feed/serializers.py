@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from feed.models import Post, Vote, Comment
+from feed.models import Post, Vote, Comment, Report
 from account.serializers import UserSerializer
 
 
@@ -35,6 +35,18 @@ class PostSerializer(serializers.ModelSerializer):
         post = Post.objects.create(
             title=title, content=content, tag=tag, author=self.context['request'].user)
         return post
+
+class ReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Report
+        fields = ['id', 'type']  # 'post' and 'user' are excluded as they are handled in the view
+
+    def validate(self, data):
+        request = self.context['request']
+        post = self.context['post']
+        if post.author == request.user:
+            raise serializers.ValidationError("You cannot report your own post.")
+        return data
 
 
 class VoteSerializer(serializers.ModelSerializer):
