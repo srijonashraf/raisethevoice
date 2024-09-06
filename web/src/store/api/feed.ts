@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import axiosBaseQuery from './queries';
-import { PostT } from 'types/feed';
+import { CommentT, PostT } from 'types/feed';
 
 export const feedApi = createApi({
   reducerPath: 'feedApi',
@@ -37,6 +37,19 @@ export const feedApi = createApi({
         method: 'post',
       }),
     }),
+    getComments: builder.query<CommentT[], number>({
+      query: (postId: number) => ({
+        url: `/feed/comment/${postId}/`,
+        method: 'get',
+      }),
+    }),
+    submitComment: builder.mutation<CommentT, any>({
+      query: ({ postId, ...data }: any) => ({
+        url: `/feed/comment/${postId}/`,
+        method: 'post',
+        data,
+      }),
+    }),
   }),
 });
 
@@ -49,4 +62,6 @@ export const {
   useGetExploredPostsQuery,
   useGetTrendingPostsQuery,
   useSubmitVoteMutation,
+  useGetCommentsQuery,
+  useSubmitCommentMutation,
 } = feedApi;
