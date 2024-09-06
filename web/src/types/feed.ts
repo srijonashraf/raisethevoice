@@ -1,4 +1,4 @@
-import { UserProfileT } from 'types';
+import { UserProfileT, UserT } from 'types';
 
 export type AuthorT = {
   id: number;
@@ -25,4 +25,13 @@ export type PostT = {
   is_upvoted: boolean;
   is_downvoted: boolean;
   visits: number;
+};
+
+export type CommentT = {
+  id: number;
+  content: string;
+  created_at?: string;
+  updated_at?: string;
+  feed: PostT;
+  user: UserT;
 };

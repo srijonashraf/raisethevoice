@@ -181,7 +181,7 @@ const ActionBar = (props: PostSingleProps) => {
         </div>
       </div>
 
-      {isCommentBoxOpen ? <CommentBox /> : null}
+      {isCommentBoxOpen ? <CommentBox post={props.post} /> : null}
       <ShareModal
         open={isShareModalOpen}
         onCancel={() => setIsShareModalOpen(false)}
