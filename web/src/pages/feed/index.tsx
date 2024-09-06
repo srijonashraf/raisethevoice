@@ -14,10 +14,9 @@ export default function FeedPage() {
       <Col xs={24} md={18} className="col-span-4">
         <Feed />
       </Col>
-      <Col xs={0} md={6} className="col-span-2">
+      <Col xs={0} md={6} className="col-span-2 pt-7">
         <div className="flex flex-col gap-5 sticky top-[88px]">
           {user ? <FollowSuggestion /> : <TrendingPosts />}
-
           <Footer />
         </div>
       </Col>

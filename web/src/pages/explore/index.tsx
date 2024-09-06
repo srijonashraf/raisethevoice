@@ -11,7 +11,7 @@ export default function ExplorePage() {
         <Tabs />
         <Feed />
       </Col>
-      <Col span={6} className="col-span-2">
+      <Col span={6} className="col-span-2 pt-7">
         <div className="flex flex-col gap-5 sticky top-[88px]">
           <TrendingPosts />
           <Footer />
