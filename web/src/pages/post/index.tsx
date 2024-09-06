@@ -23,7 +23,7 @@ export default function PostPage() {
 
           <div className="mt-5">
             <h1 className="text-2xl font-semibold"> {data?.title}</h1>
-            <div
+            <article
               dangerouslySetInnerHTML={createMarkup(data?.content)}
               className="pt-2 pb-5"
             />
