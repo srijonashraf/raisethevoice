@@ -80,8 +80,11 @@ class SinglePostView(APIView):
 
     def put(self, request, pk):
         post = Post.objects.get(id=pk)
-        serializer = PostSerializer(
-            post, data=request.data, partial=True)
+        
+        if post.author != request.user:
+            return Response({"error": "You are not authorized to update this post."}, status=status.HTTP_403_FORBIDDEN)
+
+        serializer = PostSerializer(post, data=request.data, partial=True)
 
         if serializer.is_valid():
             serializer.save()
@@ -89,11 +92,33 @@ class SinglePostView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        if Post.objects.filter(id=pk).exists():
-            post_serializer = Post.objects.get(id=pk)
-            post_serializer.delete()
-            return Response("Success")
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        post = Post.objects.get(id=pk)
+
+        if post.author != request.user:
+            return Response({"error": "You are not authorized to delete this post."}, status=status.HTTP_403_FORBIDDEN)
+
+        post.delete()
+        return Response({"message": "Post deleted successfully"}, status=status.HTTP_200_OK)
+
+
+class ReportView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, post_id):
+        post = get_object_or_404(Post, id=post_id)
+
+        if post.author == request.user:
+            return Response({"error": "You cannot report your own post."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if Report.objects.filter(user=request.user, post=post).exists():
+            return Response({"error": "You have already reported this post."}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = ReportSerializer(data=request.data, context={'request': request, 'post': post})
+        if serializer.is_valid():
+            serializer.save(user=request.user, post=post)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class TrendingPostView(APIView):

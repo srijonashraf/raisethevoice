@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from feed.models import Post, Vote, Comment
+from feed.models import Post, Vote, Comment, Report
 from account.serializers import UserSerializer
 
 
@@ -36,6 +36,10 @@ class PostSerializer(serializers.ModelSerializer):
             title=title, content=content, tag=tag, author=self.context['request'].user)
         return post
 
+class ReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Report
+        fields = ['id', 'type'] 
 
 class VoteSerializer(serializers.ModelSerializer):
     class Meta:

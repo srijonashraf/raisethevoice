@@ -18,6 +18,25 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+class Report(models.Model):
+    OFFENSIVE = 0
+    ABUSIVE = 1
+    OTHERS = 2
+    REPORT_TYPE = (
+        (OFFENSIVE, 'Offensive'),
+        (ABUSIVE, 'Abusive'),
+        (OTHERS, 'Others')
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, related_name="reports", on_delete=models.CASCADE)
+    type = models.IntegerField(choices=REPORT_TYPE, default=None, null=True)
+
+    class Meta:
+        unique_together = ('user', 'post')
+
+    def __str__(self):
+        return f"{self.user} reported {self.post.title}"
+
 
 class Vote(models.Model):
     UPVOTE = 1
